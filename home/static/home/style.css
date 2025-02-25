@@ -1,0 +1,110 @@
+
+input {
+    border: 2px solid rgba(0, 0, 0, 0.412)
+}
+
+input:user-invalid {
+    border-color: red;
+    
+}
+
+input[type="password"] {
+    background-color: #ffffffeb !important;
+    border-color: black; /* Сброс границы (если требуется) */
+}
+
+/* Логин и Вход */
+/* Карточка -> Логін та вхід*/
+.card-my {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px auto;
+    text-align: left;
+    max-width: 500px;
+}
+
+/* Заголовок -> Логін та вхід*/
+.card-my h3 {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.card-my a {
+    color: rgb(205, 80, 80);
+}
+
+/* Форм-групи -> Логін та вхід */
+.form-group-my {
+    margin-bottom: 15px;
+}
+
+/* Мітки -> Логін та Вхід*/
+.form-group-my label {
+    font-size: 16px;
+    color: #000000;
+    margin: 5px;
+}
+
+/* Кнопка -> Логін та вхід*/
+.btn-my {
+    background-color: rgb(252, 117, 117);
+    border: none;
+    border-color: rgb(224, 103, 103);
+    color: black;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-my:hover {
+    background-color: rgb(245, 81, 81);
+}
+
+/* Пошта -> Логін і Вхід*/
+.email {
+    border: 2px solid rgb(0, 0, 0);
+    background-color: white;
+    color: black;
+    outline: none; 
+    transition: border-color 0.3s ease;
+}
+.email:focus {
+    border-color: rgb(0, 0, 0);
+    box-shadow: 0 0 8px rgba(130, 113, 116, 0.8); 
+}
+
+/* Помилки -> Вхід*/
+.error-list {
+    color: red;
+    margin-top: 10px;
+}
+
+.error-list li {
+    list-style-type: none;
+}
+
+.btn-outline-my {
+    background-color: transparent;
+    background-color: #ffffff;
+    border: 1px solid black !important;
+    color: black;
+}
+.btn-outline-my:hover {
+    background-color: #d3cdcd;
+}
+
+.btn-primary-my {
+    background-color: transparent;
+    background-color: rgb(95, 95, 95);
+    color: #fefefe;
+}
+.btn-primary-my:hover {
+    background-color: rgb(46, 46, 46);
+    color: #fefefe;
+}

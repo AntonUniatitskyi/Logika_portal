@@ -1,0 +1,56 @@
+{% extends "home/base.html" %}
+
+{% block title %}
+Реєстрація
+{% endblock %}
+
+{% block content %}
+
+<center>
+    <div class="card-my">
+        <h3>Заповніть форму для продовження</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group-my">
+                <label for="id_username">Юзернейм не може містити пробіли:</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group-my">
+                <label for="id_email">Пошта:</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group-my">
+                <label for="id_password1">Пароль:</label>
+                {{ form.password1 }}
+            </div>
+            <div class="form-group-my">
+                <label for="id_password2">Повторіть пароль:</label>
+                {{ form.password2 }}
+            </div>
+            <button type="submit" class=" btn btn-my m-3">Додати</button>
+        </form>
+    </div>
+</center>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% if messages %}
+        {% for message in messages %}
+        Swal.fire({
+            title: 'Помилка!',
+            text: '{{ message }}',
+            showCancelButton: true,
+            confirmButtonText: 'Увійти',
+            cancelButtonText: 'Відміна',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'login' %}"; // Замените 'login' на URL входа
+            }
+        });
+        {% endfor %}
+        {% endif %}
+    });
+</script>
+
+
+{% endblock %}
