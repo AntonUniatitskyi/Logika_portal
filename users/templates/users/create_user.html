@@ -12,12 +12,12 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group-my">
-                <label for="id_username">Юзернейм не може містити пробіли:</label>
-                {{ form.username }}
-            </div>
-            <div class="form-group-my">
                 <label for="id_email">Пошта:</label>
                 {{ form.email }}
+            </div>
+            <div class="form-group-my">
+                <label for="id_username">Юзернейм не може містити пробіли:</label>
+                {{ form.username }}
             </div>
             <div class="form-group-my">
                 <label for="id_password1">Пароль:</label>
@@ -44,7 +44,7 @@
             cancelButtonText: 'Відміна',
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "{% url 'login' %}"; // Замените 'login' на URL входа
+                window.location.href = "{% url 'users:login' %}"; // Замените 'login' на URL входа
             }
         });
         {% endfor %}

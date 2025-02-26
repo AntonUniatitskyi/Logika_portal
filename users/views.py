@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from .forms import UserForm, EmailPasswordForm
 from django.views.generic import UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
+import core.settings
 # Create your views here.
 
 class ProfileAboutView(LoginRequiredMixin, DetailView):
@@ -21,7 +23,12 @@ class ProfileUpdateView(UpdateView):
     model = User
     form_class = UserForm
     template_name = 'users/update_account.html'
-    success_url = reverse_lazy('account')
+    success_url = reverse_lazy('users:account')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Ваш профіль успішно оновлено")
+        return response
 
 def logout_view(request):
     logout(request)
@@ -34,7 +41,19 @@ def add_user(request):
             try:
                 user = form.save()
                 request.session['username'] = user.username
-                messages.success(request, 'Користувач успішно створений!')
+
+                subject = user.username
+                message = f'Вітаємо, {subject}. Ви успішно зареєстровані! Ми раді вас бачити'
+                from_email = core.settings.EMAIL_HOST_USER
+                to_email = user.email
+                send_mail(
+                    subject,
+                    message,
+                    from_email, 
+                    [to_email],
+                    fail_silently=False
+                )
+
                 return redirect('home')
             except IntegrityError:
                 messages.error(request, 'Користувач з такою поштою вже зареєстрований.')
@@ -60,14 +79,24 @@ def request_login(request):
                 if admin.check_password(password):
                     login(request, admin)
                     request.session['username'] = admin.username
-                    messages.success(request, 'Ви успішно увійшли як адмін!')
+                    subject = admin.username
+                    message = f'Вітаємо, {subject}. Ви успішно увійшли в свій акаунт! Ми раді вас бачити'
+                    from_email = core.settings.EMAIL_HOST_USER
+                    to_email = admin.email
+                    send_mail(
+                        subject,
+                        message,
+                        from_email, 
+                        [to_email],
+                        fail_silently=False
+                    )
                     return redirect('home')
                 else:
                     messages.error(request, 'Невірний пароль!')
-                    return redirect('login')
+                    return redirect('users:login')
             except User.DoesNotExist:
                 messages.error(request, 'Користувач або адмін з таким email не знайдено.')
-                return redirect('login')
+                return redirect('users:login')
 
     else:
         form = EmailPasswordForm()
