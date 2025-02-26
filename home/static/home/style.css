@@ -108,3 +108,48 @@ input[type="password"] {
     background-color: rgb(46, 46, 46);
     color: #fefefe;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    }
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+    }
+
+section {
+    padding: 30px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+h2 {
+    font-size: 2em;
+    color: #333;
+    }
+p {
+    font-size: 1.1em;
+    color: #666;
+    }
+ul {
+    list-style-type: none;
+    padding: 0;
+    }
+li {
+    margin: 10px 0;
+    }
+li a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    }
+li a:hover {
+    text-decoration: underline;
+    }
