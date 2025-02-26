@@ -1,0 +1,58 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Вхід{% endblock %}
+
+{% block content %}
+
+<center>
+    <div class="card-my">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h3>Заповніть форму для входу</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group-my">
+                <label for="id_email">Електронна пошта:</label><br>
+                {{ form.email }}
+            </div>
+            <div class="form-group-my">
+                <label for="id_password">Пароль:</label><br>
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn-my m-3">Увійти</button>
+        </form>
+        <a href="{% url 'users:add_user' %}">Реєстрація</a>
+        {% if form.errors %}
+            <ul class="error-list">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</center>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+        Swal.fire({
+            title: "{{ message.tags|default:'info'|capfirst }}",
+            text: "{{ message }}",
+            icon: "{% if 'error' in message.tags %}error{% elif 'success' in message.tags %}success{% else %}info{% endif %}",
+            showCancelButton: {% if 'error' in message.tags %}true{% else %}false{% endif %},
+            confirmButtonText: "OK",
+            cancelButtonText: "Відміна",
+        });
+        {% endfor %}
+    });
+</script>
+
+{% endblock %}
