@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.forms import Form, EmailField, EmailInput, CharField, PasswordInput, TextInput
+from django.contrib.auth.models import User, Group
+from django.forms import Form, EmailField, EmailInput, CharField, PasswordInput, TextInput, ChoiceField, ModelChoiceField, Select
 
 class UserForm(UserCreationForm):
     class Meta:
@@ -39,4 +39,22 @@ class EmailPasswordForm(Form):
             'placeholder': 'Пароль',
         }),
         label="Пароль"
+    )
+
+class ChooseUserForm(Form):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['user'].queryset = User.objects.exclude(id=user.id)
+
+    user = ModelChoiceField(
+        queryset=User.objects.all(), 
+        label="Оберіть користувача",
+        widget=Select(attrs={'class': 'form-select'})
+    )
+    group = ModelChoiceField(
+        queryset=Group.objects.all(), 
+        label="Оберіть групу",
+        widget=Select(attrs={'class': 'form-select'})
     )

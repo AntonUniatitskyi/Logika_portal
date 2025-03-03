@@ -153,3 +153,41 @@ li a {
 li a:hover {
     text-decoration: underline;
     }
+
+.card-user-group {
+    background-color: #ffffff;
+    border-radius: 15px;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+    padding: 20px;
+    margin: 20px auto;
+    text-align: left;
+    max-width: 300px;
+}
+
+/* Заголовок -> Логін та вхід*/
+.card-user-group h3 {
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.card-user-group a {
+    color: rgb(205, 80, 80);
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #b07d62;
+    box-shadow: 0 0 10px rgba(176, 125, 98, 0.8);
+    background-color: #ffffff;
+}
+
+details {
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+}
+
