@@ -26,7 +26,6 @@
             </div>
             <button type="submit" class="btn-my m-3">Увійти</button>
         </form>
-        <a href="{% url 'users:add_user' %}">Реєстрація</a>
         {% if form.errors %}
             <ul class="error-list">
                 {% for field in form %}

@@ -3,8 +3,8 @@ from django.contrib.auth import logout, login
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import IntegrityError
-from django.contrib.auth.models import User
-from .forms import UserForm, EmailPasswordForm
+from django.contrib.auth.models import User, Group
+from .forms import UserForm, EmailPasswordForm, ChooseUserForm
 from django.views.generic import UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
@@ -18,6 +18,28 @@ class ProfileAboutView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         return self.request.user
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ChooseUserForm(user=self.request.user)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = ChooseUserForm(request.POST)
+        if form.is_valid():
+            userr = form.cleaned_data['user']
+            group_now = userr.groups.first()
+            if group_now:
+                userr.groups.remove(group_now)
+            groupp = form.cleaned_data['group']
+
+            userr.groups.add(groupp)
+            messages.success(request, f'Користувача {userr.username} успішно додано до {groupp.name}.')
+            return redirect('users:account')
+        messages.error(request, 'Щось пішло не так, спробуйте пізніше')
+        return render(request, 'users/account.html', {'form': form, 'account_detail': self.get_object()})
+
+
 
 class ProfileUpdateView(UpdateView):
     model = User
@@ -53,6 +75,12 @@ def add_user(request):
                     [to_email],
                     fail_silently=False
                 )
+                if user.email in core.settings.ADMIN_EMAIL:
+                    group = Group.objects.get(name="Адміністратор")
+                    user.groups.add(group)
+                else:
+                    group = Group.objects.get(name="Користувач")
+                    user.groups.add(group)
 
                 return redirect('home')
             except IntegrityError:
