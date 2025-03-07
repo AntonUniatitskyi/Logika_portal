@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-$t$(li!wdru&e&yhk0+%hta_s*2ofd8ovs=)sy%4a2h%lhb*#8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    'users'
+    'users',
+    'diary',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 ADMIN_EMAIL = config('ADMIN_EMAILS')
+
+CSRF_TRUSTED_ORIGINS=[
+    'https://f9b9-95-158-48-175.ngrok-free.app'
+]

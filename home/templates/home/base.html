@@ -10,6 +10,7 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 
 </head>
@@ -21,9 +22,9 @@
           </div>
     
           <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="{% url 'home' %}" class="nav-link px-2 link-secondary">Головна</a></li>
+            <li><a href="{% url 'home' %}" class="nav-link px-2 {% if request.path == '/' %}link-secondary{% endif %}">Головна</a></li>
             <li><a href="#" class="nav-link px-2">Форум</a></li>
-            <li><a href="#" class="nav-link px-2">Щоденник</a></li>
+            <li><a href="{% url 'diary:diary' %}" class="nav-link px-2 {% if request.path == '/diary/diary' %}link-secondary{% endif %}">Щоденник</a></li>
             <li><a href="#" class="nav-link px-2">Події</a></li>
             <li><a href="#" class="nav-link px-2">Портфоліо</a></li>
           </ul>
