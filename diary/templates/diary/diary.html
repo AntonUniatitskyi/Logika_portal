@@ -1,0 +1,117 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+    Щоденник
+{% endblock title %}
+
+{% block content %}
+{% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </li>
+{% endfor %}
+    </ul>
+{% endif %}
+
+<div class="diary diary-container">
+
+{% if has_add_mark_permission %}
+
+    {% if diary_detail %}
+        <h1>Електронний щоденник (Усі користувачі)</h1>
+    {% endif %}
+    <table>
+        <tr>
+            <th>Користувач</th>
+            <th>За що оцінка</th>
+            <th>Оцінка</th>
+            <th>Дії</th>
+        </tr>
+        {% if diary_detail %}
+            {% for marks in diary_detail %}
+                <tr>
+                    <td>{{ marks.student }}</td>
+                    <td>{{ marks.subject }}</td>
+                    <td><span class="grade grade-5">{{ marks.mark }}</span></td>
+                    <td><a class="btn" href="{% url 'diary:edit_mark' marks.pk %}" style="color: black;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"></path>
+                        </svg>
+                        </a>
+                        <a href="{% url 'diary:delete_mark' marks.pk %}" class="btn" style="color: red">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+    {% if add_mark %}
+    <details>
+        <summary>Виставити оцінки</summary>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group mt-3">
+                <label id="id_student">Студент</label>
+                {{ add_mark.student }}
+            </div>
+            <div class="form-group mt-3">
+                <label id="id_subject">За що оцінка</label>
+                {{ add_mark.subject }}
+            </div>
+            <div class="form-group mt-3">
+                <label id="id_mark">Оцінка</label>
+                {{ add_mark.mark }}
+            </div>
+            <button type="submit" class="btn-my mt-3">Підтвердити</button>
+        </form>
+    </details>
+    {% endif %}
+{% else %}
+    {% if my_mark %}
+        <h1>Електронний щоденник {{ my_mark.first.student }}</h1>
+    {% endif %}
+    <table>
+        <tr>
+            <th>За що оцінка</th>
+            <th>Оцінка</th>
+        </tr>
+        {% if my_mark %}
+            {% for mark in my_mark %}   
+                <tr>
+                    <td>{{ mark.subject }}</td>
+                    <td><span class="grade grade-5">{{ mark.mark }}</span></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+{% endif %}
+
+{% if form %}
+        <h2>Редагувати оцінку</h2>
+        <form method="post" style="width: 400px;">
+            {% csrf_token %}
+            <div class="form-group mt-3">
+                <label id="id_student">Студент</label>
+                {{ form.student }}
+            </div>
+            <div class="form-group mt-3">
+                <label id="id_subject">За що оцінка</label>
+                {{ form.subject }}
+            </div>
+            <div class="form-group mt-3">
+                <label id="id_mark">Оцінка</label>
+                {{ form.mark }}
+            </div>
+            <button type="submit" class="btn-my mt-3">Змінити оцінку</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock content %}
+

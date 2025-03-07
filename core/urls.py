@@ -22,7 +22,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
-    path('users/', include('users.urls', namespace='users'))
+    path('users/', include('users.urls', namespace='users')),
+    path('diary/', include('diary.urls', namespace='diary'))
 ]
 
 if settings.DEBUG:
