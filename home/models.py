@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 class Group(models.Model):
     user = models.ManyToManyField(User)
     name = models.CharField(max_length=45)
-    
+    def __str__(self):
+        return f"{self.name}"
 class Subject(models.Model):
     name = models.CharField(max_length=100, verbose_name='Предмет')
 

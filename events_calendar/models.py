@@ -9,4 +9,14 @@ class Event(models.Model):
     description  = models.TextField()
     date = models.DateField()
     start_time = models.TimeField()
-    end_time = models.TimeField()
+    end_time = models.TimeField(blank=True, null=True)
+    
+    def save(self, *args, **kwargs):
+        if self.start_time:
+            self.end_time = (datetime.combine(self.date, self.start_time) + timedelta(hours=1)).time()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.subject}, {self.date} {self.start_time} - {self.end_time}"
+ 
+    

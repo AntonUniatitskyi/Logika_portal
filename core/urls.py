@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('users/', include('users.urls', namespace='users')),
-    path('diary/', include('diary.urls', namespace='diary'))
+    path('diary/', include('diary.urls', namespace='diary')),
+    path('calendar/',include('events_calendar.urls',namespace='calendar'))
 ]
 
 if settings.DEBUG:

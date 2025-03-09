@@ -1,0 +1,77 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+    Календар
+{% endblock title %}
+
+{% block content %}
+    <h1 style="text-align: center;">Сьогодні {{ today }} </h1>
+    <h2>Календарь на неделю: {{ start_of_week }} - {{ end_of_week }}</h2>
+    <table>
+        <tr>
+            {% if today.weekday == 0 %}
+                <th style="background-color: rgb(30, 0, 255);"><p style="color: lightblue;">Понеділок</p></th>                  
+            {% else %}
+                <th><p>Понеділок</p></th>     
+            {% endif %}            
+            {% if today.weekday == 1 %}
+                <th style="background-color: rgb(30, 0, 255);"><p style="color: lightblue;">Вівторок</p></th>                  
+            {% else %}
+                <th><p>Вівторок</p></th>     
+            {% endif %}  
+            {% if today.weekday == 2 %}
+                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">Середа</p></th>                  
+            {% else %}
+                <th><p>Середа</p></th>     
+            {% endif %}  
+            {% if today.weekday == 3 %}
+                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">Четвер</p></th>                  
+            {% else %}
+                <th><p>Четвер</p></th>     
+            {% endif %}  
+            {% if today.weekday == 4 %}
+                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">П'ятниця</p></th>                  
+            {% else %}
+                <th><p>П'ятниця</p></th>     
+            {% endif %}  
+            {% if today.weekday == 5 %}
+                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">Субота</p></th>                  
+            {% else %}
+                <th><p>Субота</p></th>     
+            {% endif %}  
+            {% if today.weekday == 6 %}
+                <th style="background-color: rgb(30, 0, 255);"><p style="color: white;">Неділя</p></th>                  
+            {% else %}
+                <th><p>Неділя</p></th>     
+            {% endif %}  
+        </tr>
+        <tr>
+            {% for day in week %}
+                <td>
+                    {% for event in events %}
+                        {% if event.date.weekday == day %}
+                            <div>
+                                <strong>{{ event.name }}</strong><br>
+                                {{ event.start_time }} - {{ event.end_time }}<br>
+                                {{ event.description }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+    <style>
+        table { 
+            width: 100%; border-collapse: collapse; 
+        }
+        th, td { 
+            border-bottom: 1px solid #ddd;
+            padding: 8px; text-align: center; 
+            }
+        th { 
+            width: 100px;
+            background-color: #f2f2f2; 
+        }
+    </style>
+{% endblock content %}

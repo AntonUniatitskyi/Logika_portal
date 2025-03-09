@@ -25,7 +25,7 @@
             <li><a href="{% url 'home' %}" class="nav-link px-2 {% if request.path == '/' %}link-secondary{% endif %}">Головна</a></li>
             <li><a href="#" class="nav-link px-2">Форум</a></li>
             <li><a href="{% url 'diary:diary' %}" class="nav-link px-2 {% if request.path == '/diary/diary' %}link-secondary{% endif %}">Щоденник</a></li>
-            <li><a href="#" class="nav-link px-2">Події</a></li>
+            <li><a href="{% url 'calendar:calendar' %}" class="nav-link px-2">Події</a></li>
             <li><a href="#" class="nav-link px-2">Портфоліо</a></li>
           </ul>
     
