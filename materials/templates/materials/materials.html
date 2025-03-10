@@ -1,0 +1,113 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    Матеріали
+{% endblock title %}
+{% block content %}
+{% if not form %}
+    <h1>Корисні матеріали</h1>
+    <br>
+    {% if add_material %}
+    <details style="margin-left: 5%;">
+        <summary>Додати матеріали</summary>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group mt-3">
+                <label id="id_title">Назва</label>
+                {{ add_material.title }}
+            </div>
+            <div class="form-group mt-3">
+                <label id="id_url">Посилання</label>
+                {{ add_material.url }}
+            </div>
+            <button type="submit" class="btn-my mt-3">Підтвердити</button>
+        </form>
+    </details>
+    {% endif %}
+    <br>
+    <ul>
+        {% for material in materials %}
+            <li>
+                <section>
+                    <div class="head_material">
+                        <span style="font-size: 25px;">{{ material.title }}</span>
+                        <a href="{% url 'materials:delete_material' material.pk %}" class="btn" style="color: red; float: right;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                        </a>
+                        <a class="btn" href="{% url 'materials:update_material' material.pk %}" style="color: black; float: right;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"></path>
+                            </svg>
+                            </a>
+                    </div>
+                    {% if 'youtube.com' in material.url or 'youtu.be' in material.url %}
+                        <iframe class="material" width="560" height="315" src="https://www.youtube.com/embed/{{ material.youtube_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    {% elif material.url|slice:"-4:" == '.jpg' or material.url|slice:"-4:" == '.png' or material.url|slice:"-4:" == '.gif' %}
+                        <img class="material" src="{{ material.url }}" alt="{{ material.title }}" style="width: 560px;height: 315px;">
+                    {% else %}
+                        <iframe class="material" width="560" height="315" src="{{ material.url }}" alt="{{ material.title }}"></iframe>
+                        
+                    {% endif %}
+                    
+                    
+                </section>
+            </li>
+        {% endfor %}
+    </ul>
+    <nav class="pag">
+        <ul class="pagination ">
+            <li class="page-item">
+                {% if page_obj.has_previous %}
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% else %}
+                    <span class="page-link disabled" >Previous</span>
+                {% endif %}
+            </li>
+            {% for page_num in page_obj.paginator.page_range %} 
+                {% if page_obj.number != page_num %}
+                    <li class="page-item">
+                        <a href="?page={{ page_num }}" class="page-link">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            <li class="page-item">
+                {% if page_obj.has_next %}
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                {% else %}
+                    <span class="page-link disabled" >Next</span>
+                {% endif %}
+                
+            </li>
+        </ul>
+    </nav>
+
+{% else %}
+    <section>
+        <h2>Редагувати матеріал</h2>
+        <form method="post" style="width: 400px;">
+            {% csrf_token %}
+            <div class="form-group mt-3">
+                <label id="id_title">Назва</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group mt-3">
+                <label id="id_url">Посилання</label>
+                {{ form.url }}
+            </div>
+            <button type="submit" class="btn-my mt-3">Підтвердити</button>
+        </form>
+    </section>
+{% endif %}
+
+<style>
+    .material{
+        margin-left: 25%;
+    }
+</style>    
+{% endblock %}

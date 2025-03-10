@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'home',
     'users',
     'diary',
-    'events_calendar'
+    'events_calendar',
+    'materials'
 ]
 
 MIDDLEWARE = [

@@ -24,7 +24,8 @@ urlpatterns = [
     path('', include('home.urls')),
     path('users/', include('users.urls', namespace='users')),
     path('diary/', include('diary.urls', namespace='diary')),
-    path('calendar/',include('events_calendar.urls',namespace='calendar'))
+    path('calendar/',include('events_calendar.urls',namespace='calendar')),
+    path('materials/',include('materials.urls',namespace='materials'))
 ]
 
 if settings.DEBUG:
