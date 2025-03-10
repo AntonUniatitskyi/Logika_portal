@@ -5,73 +5,75 @@
 {% endblock title %}
 
 {% block content %}
-    <h1 style="text-align: center;">Сьогодні {{ today }} </h1>
-    <h2>Календарь на неделю: {{ start_of_week }} - {{ end_of_week }}</h2>
-    <table>
-        <tr>
-            {% if today.weekday == 0 %}
-                <th style="background-color: rgb(30, 0, 255);"><p style="color: lightblue;">Понеділок</p></th>                  
-            {% else %}
-                <th><p>Понеділок</p></th>     
-            {% endif %}            
-            {% if today.weekday == 1 %}
-                <th style="background-color: rgb(30, 0, 255);"><p style="color: lightblue;">Вівторок</p></th>                  
-            {% else %}
-                <th><p>Вівторок</p></th>     
-            {% endif %}  
-            {% if today.weekday == 2 %}
-                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">Середа</p></th>                  
-            {% else %}
-                <th><p>Середа</p></th>     
-            {% endif %}  
-            {% if today.weekday == 3 %}
-                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">Четвер</p></th>                  
-            {% else %}
-                <th><p>Четвер</p></th>     
-            {% endif %}  
-            {% if today.weekday == 4 %}
-                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">П'ятниця</p></th>                  
-            {% else %}
-                <th><p>П'ятниця</p></th>     
-            {% endif %}  
-            {% if today.weekday == 5 %}
-                <th style="background-color: rgb(91, 72, 236);"><p style="color: lightblue;">Субота</p></th>                  
-            {% else %}
-                <th><p>Субота</p></th>     
-            {% endif %}  
-            {% if today.weekday == 6 %}
-                <th style="background-color: rgb(30, 0, 255);"><p style="color: white;">Неділя</p></th>                  
-            {% else %}
-                <th><p>Неділя</p></th>     
-            {% endif %}  
-        </tr>
-        <tr>
-            {% for day in week %}
-                <td>
-                    {% for event in events %}
-                        {% if event.date.weekday == day %}
-                            <div>
-                                <strong>{{ event.name }}</strong><br>
-                                {{ event.start_time }} - {{ event.end_time }}<br>
-                                {{ event.description }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </td>
-            {% endfor %}
-        </tr>
-    </table>
+    {% load static %}
+    {% load calendar_tags %}
+        
+    <h2 style="text-align: center;">Календар на тиждень: {{ start_of_week }} - {{ end_of_week }}
+        {% if is_current_week %}
+            (Поточна)
+        {% endif %}
+    </h2>
+    <div class="con">
+        <a class="new_week" href="{{ prev_week_url }}"> < </a>
+        <table>
+            <tr>
+                {% for i in week %}
+                    {% if is_current_week and today.weekday == i %}
+                        <th><div class="weekday" style="background-color: rgb(30, 0, 255);color: white;" id="monday">{{ weekdays|get_list_item:i }}</div></th>
+                    {% else %}
+                        <th><div class="weekday">{{ weekdays|get_list_item:i }}</div></th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for day in week %}
+                    <td>
+                        {% for event in events %}
+                            {% if event.date.weekday == day %}
+                                <div class="event">
+                                    <b>{{ event.subject }}</b><br>
+                                    {{ event.start_time }} - {{ event.end_time }}<br>
+                                    {{ event.description }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+        <a class="new_week" href="{{ next_week_url }}"> > </a>
+    </div>
     <style>
-        table { 
-            width: 100%; border-collapse: collapse; 
+        .con{
+            display: flex;
         }
-        th, td { 
-            border-bottom: 1px solid #ddd;
+        .new_week{
+            text-decoration: none;
+            color: black;
+            font-size: 42px;
+        }
+        table { 
+            width: 100%; 
+            background: transparent;
+        }
+        th, td {
             padding: 8px; text-align: center; 
             }
         th { 
             width: 100px;
-            background-color: #f2f2f2; 
+            background: transparent;
+        }
+        .event{
+            margin-bottom: 10px;
+            margin-bottom: 10px;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+        .weekday{
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            color: black;
         }
     </style>
 {% endblock content %}
