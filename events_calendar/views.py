@@ -6,6 +6,7 @@ from . import models
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
+from .forms import EventForm
 
 # Create your views here.
 class CalendarView(LoginRequiredMixin, ListView):
@@ -59,8 +60,19 @@ class CalendarView(LoginRequiredMixin, ListView):
                 current_date.year == today_date.year and
                 context["start_of_week"] == today_date - timedelta(days=today_date.weekday())
             )
+        # Форма додавання події
+        context['add_event'] = EventForm()
         return context
 
     def get_week_url(self, current_date, delta):
         new_date = current_date + timedelta(days=delta)
         return f"/calendar/{new_date.year}/{new_date.month}/{new_date.day}/"
+
+    def post(self, request, *args, **kwargs):
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            
+            messages.success(request, f'Оцінку додано, перегляньте сторінку.')
+            return redirect('diary:diary')
+        return self.render_to_response(self.get_context_data(form=form))

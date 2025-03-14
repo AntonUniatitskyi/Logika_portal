@@ -10,6 +10,5 @@ class EventForm(ModelForm):
             'subject': Select(attrs={'class': 'form-control'}),
             'date':DateInput(atts={'class': 'form-control','placeholder': 'Дата'}),
             'start_time':TimeInput(atts={'class': 'form-control','placeholder': 'Час початку'}),
-            'mark': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Оцінка'}),
         }
         

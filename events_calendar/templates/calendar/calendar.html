@@ -47,7 +47,29 @@
                 {% endfor %}
             </tr>
         </table>
-        
+        <details>
+            <summary>Додати подію</summary>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mt-3">
+                    <label id="id_student">Група</label>
+                    {{ add_event.group }}
+                </div>
+                <div class="form-group mt-3">
+                    <label id="id_subject">Предмет</label>
+                    {{ add_event.subject }}
+                </div>
+                <div class="form-group mt-3">
+                    <label id="id_mark">Дата</label>
+                    {{ add_event.date }}
+                </div>
+                <div class="form-group mt-3">
+                    <label id="id_mark">Час початку</label>
+                    {{ add_event.start_time }}
+                </div>
+                <button type="submit" class="btn-my mt-3">Підтвердити</button>
+            </form>
+        </details>
     </div>
     <style>
         .top_calendar{
@@ -67,9 +89,6 @@
         }
         .next{
             margin-left: 3%;
-        }
-        .con{
-            display: flex;
         }
         .new_week{
             text-decoration: none;
