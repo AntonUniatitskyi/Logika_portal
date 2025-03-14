@@ -7,14 +7,20 @@
 {% block content %}
     {% load static %}
     {% load calendar_tags %}
-        
-    <h2 style="text-align: center;">Календар на тиждень: {{ start_of_week }} - {{ end_of_week }}
-        {% if is_current_week %}
-            (Поточна)
-        {% endif %}
-    </h2>
+    <div class="top_calendar">
+        <h2 class="period_of_week">{{ start_of_week }} - {{ end_of_week }}</h2>
+            {% if not is_current_week %}
+            <div style="margin-left: 20%;" class="change_week">
+                <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
+                <a class="new_week today" href="{% url 'calendar:calendar' %}">до поточної</a>
+            {% else %}
+            <div style="margin-left: 35%;width: 100px;" class="change_week">
+                <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
+            {% endif %}
+            <a class="new_week next" href="{{ next_week_url }}"> > </a>
+        </div>
+    </div>
     <div class="con">
-        <a class="new_week" href="{{ prev_week_url }}"> < </a>
         <table>
             <tr>
                 {% for i in week %}
@@ -41,9 +47,27 @@
                 {% endfor %}
             </tr>
         </table>
-        <a class="new_week" href="{{ next_week_url }}"> > </a>
+        
     </div>
     <style>
+        .top_calendar{
+            display: flex;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .period_of_week{
+            width: 1100px;
+            margin-top: 10px;
+        }
+        .change_week{
+            width:500px;
+        }
+        .prev{
+            margin-right: 3%;
+        }
+        .next{
+            margin-left: 3%;
+        }
         .con{
             display: flex;
         }
