@@ -7,6 +7,7 @@
 {% block content %}
     {% load static %}
     {% load calendar_tags %}
+<<<<<<< HEAD
     {% if messages %}
     <ul>
         {% for message in messages %}
@@ -29,6 +30,18 @@
             <div style="margin-left: 35%;width: 100px;" class="change_week">
                 <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
         {% endif %}
+=======
+    <div class="top_calendar">
+        <h2 class="period_of_week">{{ start_of_week }} - {{ end_of_week }}</h2>
+            {% if not is_current_week %}
+            <div style="margin-left: 20%;" class="change_week">
+                <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
+                <a class="new_week today" href="{% url 'calendar:calendar' %}">до поточної</a>
+            {% else %}
+            <div style="margin-left: 35%;width: 100px;" class="change_week">
+                <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
+            {% endif %}
+>>>>>>> 4653137 (new visual functionality)
             <a class="new_week next" href="{{ next_week_url }}"> > </a>
         </div>
     </div>
@@ -62,6 +75,7 @@
                 {% endfor %}
             </tr>
         </table>
+<<<<<<< HEAD
         {% if add_event %}
             <details>
                 <summary>Додати подію</summary>
@@ -91,6 +105,9 @@
                 </form>
             </details>
         {% endif %}
+=======
+        
+>>>>>>> 4653137 (new visual functionality)
     </div>
     <style>
         .top_calendar{
@@ -104,6 +121,17 @@
         }
         .change_week{
             width:500px;
+<<<<<<< HEAD
+=======
+        }
+        .prev{
+            margin-right: 3%;
+        }
+        .next{
+            margin-left: 3%;
+        }
+        .con{
+>>>>>>> 4653137 (new visual functionality)
             display: flex;
         }
         .new_week{
