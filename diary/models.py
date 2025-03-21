@@ -4,11 +4,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from home import models as home_models
 
 # Create your models here.
-# class Subject(models.Model):
-#     name = models.CharField(max_length=100, verbose_name='Предмет')
-
-#     def __str__(self):
-#         return f"{self.name}"
 
 class Mark(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='student_marks')

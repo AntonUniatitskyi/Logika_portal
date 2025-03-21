@@ -7,16 +7,28 @@
 {% block content %}
     {% load static %}
     {% load calendar_tags %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </li>
+    {% endfor %}
+        </ul>
+    {% endif %}
     <div class="top_calendar">
         <h2 class="period_of_week">{{ start_of_week }} - {{ end_of_week }}</h2>
-            {% if not is_current_week %}
+        {% if not is_current_week %}
             <div style="margin-left: 20%;" class="change_week">
                 <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
-                <a class="new_week today" href="{% url 'calendar:calendar' %}">до поточної</a>
-            {% else %}
+                <div class="today_div">
+                    <a class="new_week today" href="{% url 'calendar:calendar' %}">до поточної</a>
+                </div>
+        {% else %}
             <div style="margin-left: 35%;width: 100px;" class="change_week">
                 <a class="new_week prev" href="{{ prev_week_url }}"> < </a>
-            {% endif %}
+        {% endif %}
             <a class="new_week next" href="{{ next_week_url }}"> > </a>
         </div>
     </div>
@@ -39,7 +51,10 @@
                                 <div class="event">
                                     <b>{{ event.subject }}</b><br>
                                     {{ event.start_time }} - {{ event.end_time }}<br>
-                                    {{ event.description }}
+                                    <span class="description">
+                                        {{ event.description }}
+                                    </span>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -67,6 +82,10 @@
                     <label id="id_mark">Час початку</label>
                     {{ add_event.start_time }}
                 </div>
+                <div class="form-group mt-3"></div>
+                    <label id="id_descriprion">Домошнє Завдання</label>
+                    {{ add_event.description }}
+                </div>
                 <button type="submit" class="btn-my mt-3">Підтвердити</button>
             </form>
         </details>
@@ -83,6 +102,23 @@
         }
         .change_week{
             width:500px;
+            display: flex;
+        }
+        .new_week{
+            text-decoration: none;
+            color: black;
+            font-size: 42px;
+        }
+        .today{
+            color: rgb(120, 120, 255);
+            font-size: 20px;           
+        }
+        .today_div{
+            margin-top: 15px
+        }
+        .today:hover{
+            color: blue;
+            text-decoration:underline;
         }
         .prev{
             margin-right: 3%;
@@ -90,23 +126,19 @@
         .next{
             margin-left: 3%;
         }
-        .new_week{
-            text-decoration: none;
-            color: black;
-            font-size: 42px;
-        }
         table { 
             width: 100%; 
             background: transparent;
         }
         th, td {
             padding: 8px; text-align: center; 
-            }
+        }
         th { 
             width: 100px;
             background: transparent;
         }
         .event{
+            padding: 5px;
             margin-bottom: 10px;
             margin-bottom: 10px;
             border: 1px solid black;
@@ -118,5 +150,24 @@
             padding: 10px;
             color: black;
         }
+        .description {
+        text-overflow: ellipsis;
+        display: inline-block;
+        width: 100%;
+    }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          let descriptions = document.querySelectorAll(".description");
+          let maxLength = 50; // Максимальная длина текста
+      
+          descriptions.forEach(desc => {
+            let text = desc.textContent.trim();
+            if (text.length > maxLength) {
+              desc.textContent = text.substring(0, maxLength) + "...";
+            }
+          });
+        });
+      </script>
+      
 {% endblock content %}

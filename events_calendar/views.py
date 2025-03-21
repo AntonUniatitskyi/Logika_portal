@@ -13,7 +13,6 @@ class CalendarView(LoginRequiredMixin, ListView):
     model = models.Event
     template_name = "calendar/calendar.html"
     context_object_name = 'events'
-    ordering = 'start_time'
 
     def get_queryset(self):
         year = self.kwargs.get('year')
@@ -29,6 +28,7 @@ class CalendarView(LoginRequiredMixin, ListView):
         end_of_week = start_of_week + timedelta(days=6)
 
         queryset = models.Event.objects.filter(date__range=[start_of_week, end_of_week])
+        queryset = queryset.order_by('start_time')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -62,6 +62,7 @@ class CalendarView(LoginRequiredMixin, ListView):
             )
         # Форма додавання події
         context['add_event'] = EventForm()
+
         return context
 
     def get_week_url(self, current_date, delta):
@@ -71,8 +72,23 @@ class CalendarView(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         form = EventForm(request.POST)
         if form.is_valid():
-            form.save()
+            event = form.save(commit=False)  # Не сохраняем сразу, проверяем
+
+            if event.start_time:
+                end_time = (datetime.combine(event.date, event.start_time) + timedelta(hours=1)).time()
+
+            print(end_time, event.start_time,event.date )
+            # Проверяем пересечения
+            overlapping_events = models.Event.objects.filter(
+                date=event.date,  
+                start_time__lt=end_time,  
+                end_time__gt=event.start_time  
+            )
+
+            if not overlapping_events:
+                print(overlapping_events)
+                event.save()  # Сохраняем, если нет пересечений
+                messages.success(request, "Подію додано, перегляньте сторінку.")
+            messages.error(request, "Час зайнятий! Оберіть інший.")
+            return redirect('calendar:calendar')
             
-            messages.success(request, f'Оцінку додано, перегляньте сторінку.')
-            return redirect('diary:diary')
-        return self.render_to_response(self.get_context_data(form=form))
