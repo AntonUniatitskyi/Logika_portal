@@ -22,11 +22,11 @@
           </div>
     
           <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="{% url 'home' %}" class="nav-link px-2 {% if request.path == '/' %}link-secondary{% endif %}">Головна</a></li>
-            <li><a href="#" class="nav-link px-2">Форум</a></li>
-            <li><a href="{% url 'diary:diary' %}" class="nav-link px-2 {% if request.path == '/diary/diary' %}link-secondary{% endif %}">Щоденник</a></li>
-            <li><a href="#" class="nav-link px-2">Події</a></li>
-            <li><a href="#" class="nav-link px-2">Портфоліо</a></li>
+            <li><a href="{% url 'home' %}" class="my-nav-link nav-link px-2 {% if request.path == '/' %}link-secondary{% endif %}">Головна</a></li>
+            <li><a href="#" class="my-nav-link nav-link px-2">Форум</a></li>
+            <li><a href="{% url 'diary:diary' %}" class="my-nav-link nav-link px-2 {% if request.path == '/diary/diary' %}link-secondary{% endif %}">Щоденник</a></li>
+            <li><a href="#" class="my-nav-link nav-link px-2">Події</a></li>
+            <li><a href="{% url 'portfolio:portfolio' %}" class="my-nav-link nav-link px-2 {% if request.path == '/portfolio/portfolio' %}link-secondary{% endif %}">Портфоліо</a></li>
           </ul>
     
           <div class="col-md-3 text-end">
@@ -56,7 +56,7 @@
         <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Форум</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Щоденник</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Події</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Портфоліо</a></li>
+        <li class="nav-item"><a href="{% url 'portfolio:portfolio' %}" class="nav-link px-2 text-body-secondary">Портфоліо</a></li>
       </ul>
     </footer>
   </div>

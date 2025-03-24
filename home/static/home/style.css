@@ -251,3 +251,80 @@ tr:hover {
     transform: translateY(-50%);
     cursor: pointer;
 }
+
+
+
+
+
+
+.portfolio{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.portfolio-container {
+    max-width: 500px;
+    background-color: white;
+    border-radius: 15px;
+    
+}
+.portfolio-container p {
+    padding: 10px;
+}
+.portfolio-container-h {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    flex-direction: row;
+    height: fit-content;
+}
+
+.portfolio-container-h img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.portfolio-container-h h3 {
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+}
+
+.pagination .page-link {
+    color: #000000;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #74787c;
+    border-color: #000000;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.my-nav-link {
+    color: black;
+}
+
+.my-nav-link:hover {
+    color: #838282;
+}
+
+.portfolio-account {
+    align-items: center;
+    text-align: center;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    padding: 10px;
+}

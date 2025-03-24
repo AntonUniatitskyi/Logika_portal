@@ -1,0 +1,118 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card portfolio-container shadow-lg p-4 text-center" style="max-width: 800px; width: 100%;">
+        <div class="portfolio-container-h d-flex flex-column align-items-center">
+            <div class="mb-3">
+                {% if port_det.photo %}
+                    <img src="{{ port_det.photo.url }}" class="rounded-circle border" alt="Фото користувача" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="no-photo">Немає фото</div>
+                {% endif %}
+            </div>
+            <h2>{{ port_det.surname }} {{ port_det.name }}</h2>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                {% if port_det.ins %}
+                    <a href="{{ port_det.ins }}" class="btn btn-danger btn-my" target="_blank">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                {% endif %}
+                {% if port_det.github %}
+                    <a href="{{ port_det.github }}" class="btn btn-dark btn-my" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                {% endif %}
+                {% if port_det.linkedin %}
+                    <a href="{{ port_det.linkedin }}" class="btn btn-dark btn-my" target="_blank">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+
+        <p class="text-muted">{{ port_det.description }}</p>
+
+
+        {% if repos %}
+            <div class="mt-4">
+                <h3>Репозиторії на GitHub</h3>
+                {% if repos %}
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
+                        {% for repo in repos %}
+                            <div class="col">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="{{ repo.html_url }}" target="_blank" class="text-dark">
+                                                <strong>{{ repo.name }}</strong>
+                                            </a>
+                                        </h5>
+                                        <p class="card-text text-muted">
+                                            {% if repo.description %}
+                                                {{ repo.description }}
+                                            {% else %}
+                                                <em>Опис відсутній</em>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        Створено: {{ repo.created_at|date:"d M Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if repos.paginator.num_pages > 1 %}
+                        <nav aria-label="Page navigation" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                {% if repos.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ repos.previous_page_number }}" aria-label="Previous">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">«</span>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in repos.paginator.page_range %}
+                                    {% if repos.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > repos.number|add:'-3' and num < repos.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if repos.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ repos.next_page_number }}" aria-label="Next">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">»</span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <p class="mt-3">У цього користувача немає публічних репозиторіїв на GitHub.</p>
+                {% endif %}
+            </div>  
+        {% endif %}
+        <div class="mt-4">
+            <a href="{% url 'portfolio:portfolio' %}" class="btn btn-outline-my">Назад</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

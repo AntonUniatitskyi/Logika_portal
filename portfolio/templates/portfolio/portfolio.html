@@ -1,0 +1,30 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <div class="portfolio">
+        {% if portfolio_detail %}
+            {% for i in portfolio_detail %}
+                {% if i.name and i.surname %}
+                <div class="portfolio-container">
+                    <div class="portfolio-container-h">
+                        {% if i.photo %}
+                            <img src="{{ i.photo.url }}" alt="Фото користувача" style="max-width: 300px;">
+                        {% else %}
+                            <p>Фото відсутнє</p>
+                        {% endif %}
+                        <h3><a href="{% url 'portfolio:portfolio_deta' i.pk %}" style="text-decoration: none; color: inherit;">{{ i.user }}</a></h3>
+                        <h3>{{ i.name }} {{ i.surname }}</h3>
+                    </div><hr>
+                    <p>{{ i.description }}</p>
+                </div>
+                {% endif %}
+    
+    
+            {% endfor %}
+            
+        {% else %}
+            <h1>Немає даних</h1>
+        {% endif %}
+    </div>
+    
+{% endblock content %}
