@@ -1,0 +1,76 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Створити опитування</h2>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Назва опитування:</label>
+            <input type="text" name="title" class="form-control" required>
+            <div class="invalid-feedback">Будь ласка, введіть назву опитування.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Опис:</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
+
+        <h3>Запитання</h3>
+        <div id="questions">
+            <div class="question mb-3">
+                <div class="input-group">
+                    <input type="text" name="question" class="form-control" placeholder="Текст запитання" required>
+                    <input type="text" name="choices" class="form-control" placeholder="Варіанти відповідей (через ;)" required>
+                    <button type="button" class="btn btn-danger remove-question"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="invalid-feedback">Будь ласка, введіть запитання та варіанти відповідей.</div>
+            </div>
+        </div>
+        
+        <button type="button" id="add-question" class="btn btn-primary"><i class="fas fa-plus"></i> Додати запитання</button>
+        <br><br>
+        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Створити</button>
+    </form>
+</div>
+
+<script>
+document.getElementById("add-question").addEventListener("click", function() {
+    let div = document.createElement("div");
+    div.classList.add("question", "mb-3");
+
+    div.innerHTML = `
+        <div class="input-group">
+            <input type="text" name="question" class="form-control" placeholder="Текст запитання" required>
+            <input type="text" name="choices" class="form-control" placeholder="Варіанти відповідей (через ;)" required>
+            <button type="button" class="btn btn-danger remove-question"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="invalid-feedback">Будь ласка, введіть запитання та варіанти відповідей.</div>
+    `;
+
+    document.getElementById("questions").appendChild(div);
+    div.querySelector(".remove-question").addEventListener("click", function() {
+        div.remove();
+    });
+});
+
+document.querySelectorAll(".remove-question").forEach(button => {
+    button.addEventListener("click", function() {
+        button.closest(".question").remove();
+    });
+});
+
+(function () {
+    'use strict';
+    let forms = document.querySelectorAll('.needs-validation');
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();
+</script>
+{% endblock %}
