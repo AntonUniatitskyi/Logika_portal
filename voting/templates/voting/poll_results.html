@@ -1,0 +1,7 @@
+<h1>Результати: {{ poll.question }}</h1>
+<ul>
+    {% for choice in poll.choices.all %}
+        <li>{{ choice.text }} – {{ choice.vote_set.count }} голосів</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'poll_list' %}">Назад до списку опитувань</a>

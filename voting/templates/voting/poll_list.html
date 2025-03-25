@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опитування для учня</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .checkbox-group {
+            text-align: left;
+            margin: 10px 0;
+        }
+        .checkbox-group label {
+            font-size: 16px;
+            display: block;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Опитування для учня</h2>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="dob">Впишіть дату народження:</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label>Які у вас улюблені уроки?</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="lessons" value="Математика"> Математика</label>
+            <label><input type="checkbox" name="lessons" value="Фізика"> Фізика</label>
+            <label><input type="checkbox" name="lessons" value="Хімія"> Хімія</label>
+            <label><input type="checkbox" name="lessons" value="Біологія"> Біологія</label>
+            <label><input type="checkbox" name="lessons" value="Історія"> Історія</label>
+            <label><input type="checkbox" name="lessons" value="Географія"> Географія</label>
+            <label><input type="checkbox" name="lessons" value="Література"> Література</label>
+            <label><input type="checkbox" name="lessons" value="Інформатика"> Інформатика</label>
+            <label><input type="checkbox" name="lessons" value="Фізкультура"> Фізкультура</label>
+        </div>
+
+        <label for="career">Ким ви хочете стати?</label>
+        <input type="text" id="career" name="career" placeholder="Наприклад, лікарем, програмістом" required>
+
+        <button type="submit">Надіслати</button>
+    </form>
+
+    {% if submitted %}
+    <p class="result">Ви успішно заповнили опитування! 🎉</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

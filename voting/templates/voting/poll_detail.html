@@ -1,0 +1,11 @@
+<h1>{{ poll.question }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {% for choice in choices %}
+        <input type="radio" name="choice" value="{{ choice.id }}" 
+            {% if user_vote and user_vote.choice.id == choice.id %}checked{% endif %}>
+        {{ choice.text }}<br>
+    {% endfor %}
+    <button type="submit">Голосувати</button>
+</form>
+<a href="{% url 'poll_results' poll.id %}">Переглянути результати</a>
