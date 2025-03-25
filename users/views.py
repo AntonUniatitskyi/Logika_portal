@@ -13,6 +13,11 @@ import portfolio.forms as portfolio_f
 import portfolio.models  as portfolio_m
 # Create your views here.
 
+def get_or_none(model, **kwargs):
+    try:
+        return model.objects.get(**kwargs)
+    except model.DoesNotExist:
+        return None
 
 class ProfileAboutView(LoginRequiredMixin, DetailView):
     model = User
@@ -24,31 +29,10 @@ class ProfileAboutView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        portfolio, created = portfolio_m.Portfolio.objects.get_or_create(user=self.request.user)
+        portfolio = get_or_none(portfolio_m.Portfolio, user=self.request.user)
         context['portfolio'] = portfolio
         context['role_form'] = ChooseUserForm(user=self.request.user)
         return context
-    
-    def post(self, request, *args, **kwargs):
-        form = ChooseUserForm(request.POST)
-        if form.is_valid():
-            userr = form.cleaned_data['user']
-            group_now = userr.groups.first()
-            if group_now:
-                userr.groups.remove(group_now)
-            groupp = form.cleaned_data['group']
-            userr.groups.add(groupp)
-            messages.success(request, f'Користувача {userr.username} успішно додано до {groupp.name}.')
-        portfolio, _ = portfolio_m.Portfolio.objects.get_or_create(user=request.user)
-        portfolio_form = portfolio_f.PortfolioForm(request.POST, request.FILES, instance=portfolio)
-        
-        if portfolio_form.is_valid():
-            portfolio_form.save()
-            messages.success(request, 'Ваше портфоліо успішно збережено!')
-        else:
-            messages.error(request, 'Щось пішло не так, спробуйте пізніше')
-        
-        return redirect('users:account')
 
 
 class ProfileUpdateView(UpdateView):
