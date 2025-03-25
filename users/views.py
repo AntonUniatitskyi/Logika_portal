@@ -33,6 +33,21 @@ class ProfileAboutView(LoginRequiredMixin, DetailView):
         context['portfolio'] = portfolio
         context['role_form'] = ChooseUserForm(user=self.request.user)
         return context
+    
+    def post(self, request, *args, **kwargs):
+        form = ChooseUserForm(request.POST)
+        if form.is_valid():
+            userr = form.cleaned_data['user']
+            group_now = userr.groups.first()
+            if group_now:
+                userr.groups.remove(group_now)
+            groupp = form.cleaned_data['group']
+ 
+            userr.groups.add(groupp)
+            messages.success(request, f'Користувача {userr.username} успішно додано до {groupp.name}.')
+            return redirect('users:account')
+        messages.error(request, 'Щось пішло не так, спробуйте пізніше')
+        return render(request, 'users/account.html', {'role_form': form, 'account_detail': self.get_object()})
 
 
 class ProfileUpdateView(UpdateView):

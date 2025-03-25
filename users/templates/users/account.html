@@ -40,11 +40,11 @@
                 {% csrf_token %}
                 <div class="form-group-my">
                     <label id="id_user">Користувач</label>
-                    {{ form.user }}
+                    {{ role_form.user }}
                 </div>
                 <div class="form-group-my">
                     <label id="id_group">Роль</label>
-                    {{ form.group }}
+                    {{ role_form.group }}
                 </div>
                 <center><button type="submit" class="btn-my m-3">Підтвердити</button></center>
             </form>
