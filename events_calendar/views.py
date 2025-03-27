@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from .forms import EventForm
+from django.db.models import Q
+from home.models import Group
 
 # Create your views here.
 class CalendarView(LoginRequiredMixin, ListView):
@@ -15,6 +17,10 @@ class CalendarView(LoginRequiredMixin, ListView):
     context_object_name = 'events'
 
     def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        queryset = queryset.filter(Q(created_by=self.request.user) | Q(group__user=self.request.user))
+
         year = self.kwargs.get('year')
         month = self.kwargs.get('month')
         day = self.kwargs.get('day')
@@ -27,7 +33,7 @@ class CalendarView(LoginRequiredMixin, ListView):
         start_of_week = current_date - timedelta(days=current_date.weekday())
         end_of_week = start_of_week + timedelta(days=6)
 
-        queryset = models.Event.objects.filter(date__range=[start_of_week, end_of_week])
+        queryset = queryset.filter(date__range=[start_of_week, end_of_week])
         queryset = queryset.order_by('start_time')
         return queryset
 
@@ -61,7 +67,10 @@ class CalendarView(LoginRequiredMixin, ListView):
                 context["start_of_week"] == today_date - timedelta(days=today_date.weekday())
             )
         # Форма додавання події
-        context['add_event'] = EventForm()
+        if self.request.user.has_perm('Events_Calendar.view_event'):
+            context['add_event'] = EventForm()
+        else:
+            context['add_event'] = None
 
         return context
 
@@ -73,22 +82,22 @@ class CalendarView(LoginRequiredMixin, ListView):
         form = EventForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)  # Не сохраняем сразу, проверяем
+            event.created_by = self.request.user
 
             if event.start_time:
                 end_time = (datetime.combine(event.date, event.start_time) + timedelta(hours=1)).time()
-
-            print(end_time, event.start_time,event.date )
-            # Проверяем пересечения
+            
             overlapping_events = models.Event.objects.filter(
                 date=event.date,  
                 start_time__lt=end_time,  
-                end_time__gt=event.start_time  
+                end_time__gt=event.start_time  ,
+                group = event.group
             )
 
             if not overlapping_events:
-                print(overlapping_events)
-                event.save()  # Сохраняем, если нет пересечений
+                event.save()
                 messages.success(request, "Подію додано, перегляньте сторінку.")
+                return redirect('calendar:calendar')
             messages.error(request, "Час зайнятий! Оберіть інший.")
             return redirect('calendar:calendar')
             

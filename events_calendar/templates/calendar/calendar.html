@@ -62,33 +62,35 @@
                 {% endfor %}
             </tr>
         </table>
-        <details>
-            <summary>Додати подію</summary>
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group mt-3">
-                    <label id="id_student">Група</label>
-                    {{ add_event.group }}
-                </div>
-                <div class="form-group mt-3">
-                    <label id="id_subject">Предмет</label>
-                    {{ add_event.subject }}
-                </div>
-                <div class="form-group mt-3">
-                    <label id="id_mark">Дата</label>
-                    {{ add_event.date }}
-                </div>
-                <div class="form-group mt-3">
-                    <label id="id_mark">Час початку</label>
-                    {{ add_event.start_time }}
-                </div>
-                <div class="form-group mt-3"></div>
-                    <label id="id_descriprion">Домошнє Завдання</label>
-                    {{ add_event.description }}
-                </div>
-                <button type="submit" class="btn-my mt-3">Підтвердити</button>
-            </form>
-        </details>
+        {% if add_event %}
+            <details>
+                <summary>Додати подію</summary>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group mt-3">
+                        <label id="id_student">Група</label>
+                        {{ add_event.group }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label id="id_subject">Предмет</label>
+                        {{ add_event.subject }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label id="id_mark">Дата</label>
+                        {{ add_event.date }}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label id="id_mark">Час початку</label>
+                        {{ add_event.start_time }}
+                    </div>
+                    <div class="form-group mt-3"></div>
+                        <label id="id_descriprion">Домошнє Завдання</label>
+                        {{ add_event.description }}
+                    </div>
+                    <button type="submit" class="btn-my mt-3">Підтвердити</button>
+                </form>
+            </details>
+        {% endif %}
     </div>
     <style>
         .top_calendar{
