@@ -1,0 +1,17 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    Видалення
+{% endblock title %}
+
+{% block content %}
+<div class="container card-my">
+    <h3>Видалення матеріалу</h3>
+    <p>Ви впевнені, що хочете видалити "{{ object.title }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn">Так, видалити</button>
+        <a href="{% url 'materials:materials' %}" class="btn">Ні, назад до матеріалів</a>
+    </form>
+</div>
+{% endblock content %}
