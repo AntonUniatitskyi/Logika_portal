@@ -5,46 +5,55 @@
 {% endblock %}
 
 {% block content %}
-<center>
-    <div class="card-my">
-        <h3>Заповніть форму для продовження</h3>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group-my">
-                <label for="id_email">Пошта:</label>
-                {{ form.email }}
-            </div>
-            <div class="form-group-my">
-                <label for="id_username">Юзернейм не може містити пробіли:</label>
-                {{ form.username }}
-            </div>
-            <div class="form-group-my password-container">
-                <label for="id_password1">Пароль:</label>
-                {{ form.password1 }}
-                <span class="toggle-password" data-target="id_password1">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-            <div class="form-group-my password-container">
-                <label for="id_password2">Повторіть пароль:</label>
-                {{ form.password2 }}
-                <span class="toggle-password" data-target="id_password2">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-            <button type="submit" class="btn btn-my m-3">Реєстрація</button>
-        </form>
-        {% if form.errors %}
-            <ul class="error-list">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-</center>
+<!-- <div class="page-register"> -->
+<section>
+
+    <form method="post">
+        <h1>Реєстрація</h1>
+        {% csrf_token %}
+        <div class="inputbox">
+            <ion-icon name="mail-outline"></ion-icon>
+            {{ form.email }}
+            <label for="id_email">Пошта:</label>
+        </div>
+        <div class="inputbox">
+            <ion-icon name="person-outline"></ion-icon>
+            {{ form.username }}
+            <label for="id_username">Юзернейм</label>
+        </div>
+        <div class="inputbox password-container">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            {{ form.password1 }}
+            <label for="id_password1">Пароль</label>
+            <span class="toggle-password" data-target="id_password1">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+        <div class="inputbox password-container">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            {{ form.password2 }}
+            <label for="id_password2">Повторіть пароль</label>
+            <span class="toggle-password" data-target="id_password2">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+        <button type="submit" class="btn btn-my m-3">Реєстрація</button>
+        <div class="register">
+            <p>Є акаунт? <a href="{% url 'users:login' %}">Увійти</a></p>
+        </div>
+    </form>
+</section>
+{% if form.errors %}
+    <ul class="error-list">
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+{% endif %}
+<!-- </div> -->
+    
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

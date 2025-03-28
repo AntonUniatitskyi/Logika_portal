@@ -3,35 +3,39 @@
 {% block title %}Вхід{% endblock %}
 
 {% block content %}
-<center>
-    <div class="card-my">
-        <h3>Заповніть форму для входу</h3>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group-my">
-                <label for="id_email">Електронна пошта:</label><br>
-                {{ form.email }}
-            </div>
-            <div class="form-group-my password-container">
-                <label for="id_password">Пароль:</label><br>
-                {{ form.password }}
-                <span class="toggle-password" data-target="id_password">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-            <button type="submit" class="btn-my m-3">Увійти</button>
-        </form>
-        {% if form.errors %}
-            <ul class="error-list">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
+<section>    
+    <form method="POST">
+        {% csrf_token %}
+        <h1>Вхід</h1>
+        <div class="inputbox">
+            <ion-icon name="mail-outline"></ion-icon>
+            {{ form.email }}
+            <label for="id_email">Електронна пошта</label>
+        </div>
+        <div class="inputbox password-container">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            {{ form.password }}
+            <label for="id_password">Пароль:</label><br>
+            <span class="toggle-password" data-target="id_password">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+        <button type="submit" class="btn-my m-3">Увійти</button>
+        <div class="register">
+            <p>Нема акаунта? <a href="{% url 'users:add_user' %}">Реєстрація</a></p>
+        </div>
+    </form>
+    {% if form.errors %}
+        <ul class="error-list">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
                 {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-</center>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
