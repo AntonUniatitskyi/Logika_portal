@@ -4,21 +4,23 @@ from django.forms import Form, EmailField, EmailInput, CharField, PasswordInput,
 
 class UserForm(UserCreationForm):
     password1 = CharField(
-        label="Пароль",
+        # label="Пароль",
         widget=PasswordInput(attrs={
-            'class': 'form-control email',
-            'placeholder': 'Придумайте пароль',
+            # 'class': 'form-control email',
+            # 'placeholder': 'Придумайте пароль',
             'id': 'id_password1',
             'data-toggle': 'password',
+            'required': 'required',
         })
     )
     password2 = CharField(
-        label="Повторіть пароль",
+        # label="Повторіть пароль",
         widget=PasswordInput(attrs={
-            'class': 'form-control email',
-            'placeholder': 'Повторіть пароль',
+            # 'class': 'form-control email',
+            # 'placeholder': 'Повторіть пароль',
             'id': 'id_password1',
             'data-toggle': 'password',
+            'required': 'required',
         })
     )
 
@@ -27,31 +29,33 @@ class UserForm(UserCreationForm):
         fields = ["username", "email", "password1", "password2"]
         widgets = {
             "username": TextInput(attrs={
-                'class': 'form-control email',
-                'placeholder': 'Імя користувача',
+                # 'class': 'form-control email',
+                # 'placeholder': 'Імя користувача',
+                'required': 'required',
             }),
             "email": EmailInput(attrs={
-                'class': 'form-control email',
-                'placeholder': 'Ваша пошта',
+                # 'class': 'form-control email',
+                # 'placeholder': 'Ваша пошта',
+                'required': 'required',
             }),
         }
 
 class EmailPasswordForm(Form):
     email = EmailField(
-        label="Електронна пошта", 
+        # label="Електронна пошта", 
         widget=EmailInput(attrs={
-            'class': 'form-control email',
-            'placeholder': 'Ваша пошта',
+            # 'class': 'form-control email',
+            # 'placeholder': 'Ваша пошта',
         })
     )
     password = CharField(
         widget=PasswordInput(attrs={
-            'class': 'form-control email',
-            'placeholder': 'Пароль',
+            # 'class': 'form-control email',
+            # 'placeholder': 'Пароль',
             'id': 'id_password',
             'data-target': 'id_password'
         }),
-        label="Пароль"
+        # label="Пароль"
     )
 
 class ChooseUserForm(Form):

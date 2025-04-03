@@ -1,0 +1,38 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <center>
+
+        <div class="portfolio-account">
+            <h1>Портфоліо</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.photo}}
+                <div class="form-group-my">
+                    <label for="id_name">Ім'я</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group-my">
+                    <label for="id_surname">Прізвище</label>
+                    {{ form.surname }}
+                </div>
+                <div class="form-group-my">
+                    <label for="id_description">Коротко про себе</label>
+                    {{ form.description }}
+                </div>
+                <div class="form-group-my">
+                    <label for="id_ins">Посилання на Instagram</label>
+                    {{ form.ins }}
+                </div>
+                <div class="form-group-my">
+                    <label for="id_github">Посилання Github</label>
+                    {{ form.github }}
+                </div>
+                <div class="form-group-my">
+                    <label for="id_linkedin">Посилання LinkedIn</label>
+                    {{ form.linkedin }}
+                </div>
+                <button type="submit" class="btn btn-primary">Зберегти портфоліо</button>
+        </div>
+    </center>
+{% endblock content %}

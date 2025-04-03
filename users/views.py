@@ -9,7 +9,15 @@ from django.views.generic import UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 import core.settings
+import portfolio.forms as portfolio_f
+import portfolio.models  as portfolio_m
 # Create your views here.
+
+def get_or_none(model, **kwargs):
+    try:
+        return model.objects.get(**kwargs)
+    except model.DoesNotExist:
+        return None
 
 class ProfileAboutView(LoginRequiredMixin, DetailView):
     model = User
@@ -21,7 +29,9 @@ class ProfileAboutView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = ChooseUserForm(user=self.request.user)
+        portfolio = get_or_none(portfolio_m.Portfolio, user=self.request.user)
+        context['portfolio'] = portfolio
+        context['role_form'] = ChooseUserForm(user=self.request.user)
         return context
     
     def post(self, request, *args, **kwargs):
@@ -32,13 +42,12 @@ class ProfileAboutView(LoginRequiredMixin, DetailView):
             if group_now:
                 userr.groups.remove(group_now)
             groupp = form.cleaned_data['group']
-
+ 
             userr.groups.add(groupp)
             messages.success(request, f'Користувача {userr.username} успішно додано до {groupp.name}.')
             return redirect('users:account')
         messages.error(request, 'Щось пішло не так, спробуйте пізніше')
-        return render(request, 'users/account.html', {'form': form, 'account_detail': self.get_object()})
-
+        return render(request, 'users/account.html', {'role_form': form, 'account_detail': self.get_object()})
 
 
 class ProfileUpdateView(UpdateView):
